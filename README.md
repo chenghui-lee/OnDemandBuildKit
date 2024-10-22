@@ -26,11 +26,11 @@ Prerequisite:
 
 When you come back:
 
-    1. Create an image snapshot of the running instance via AWS console. (Actions > Image and templates > Create image).
+    - Create an image snapshot of the running instance via AWS console. (Actions > Image and templates > Create image).
 
-    2. Record down the ami id, and replaced the `ami` attribute in [ec2/main.tf](ec2/main.tf).
-    
-    3. Restore the content of `user_data` and `ami` attribute.
+    - Record down the ami id, and replaced the `ami` attribute in [ec2/main.tf](ec2/main.tf).
+
+    - Restore the content of `user_data` and `ami` attribute.
 
 Why are we doing this? Installing docker, git and tailscale every time we create an instance is slow. Snapshotting them and use the AMI to launch is faster.
 
