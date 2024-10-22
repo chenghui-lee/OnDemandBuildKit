@@ -16,7 +16,7 @@ Prerequisite:
 		"tag:ec2machine": ["your-tailscale-login@gmail.com"],
 	},
 
-    "nodeAttrs": [
+	"nodeAttrs": [
 		{"target": ["tag:ec2machine"], "ipPool": ["100.123.45.0/32"]},
 	],
 ```
@@ -25,11 +25,8 @@ Prerequisite:
 5. Replace the `user_data` attribute in [ec2/main.tf](ec2/main.tf)'s aws_instance resource with the content inside [ec2/user_data.txt](ec2/user_data.txt). And also replace the `ami` attribute value with "ami-06b21ccaeff8cd686". Then run step 6 to create all the resources. Once you're done, come back here again.
 
 When you come back:
-
     - Create an image snapshot of the running instance via AWS console. (Actions > Image and templates > Create image).
-
     - Record down the ami id, and replaced the `ami` attribute in [ec2/main.tf](ec2/main.tf).
-
     - Restore the content of `user_data` and `ami` attribute.
 
 Why are we doing this? Installing docker, git and tailscale every time we create an instance is slow. Snapshotting them and use the AMI to launch is faster.
