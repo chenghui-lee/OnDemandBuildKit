@@ -15,23 +15,26 @@ Prerequisite:
 	"tagOwners": {
 		"tag:ec2machine": ["your-tailscale-login@gmail.com"],
 	},
-    ...
+
     "nodeAttrs": [
 		{"target": ["tag:ec2machine"], "ipPool": ["100.123.45.0/32"]},
 	],
 ```
 3. Create an auth key at Tailscale, check the "Ephemeral" flag and assign the tag.
 4. Populate the `terraform.tfstate` file in each folder, following the example files given.
-5. Replace the `user_data` attribute in [ec2/main.tf](ec2/main.tf)'s aws_instance resource with the content inside [ec2/user_data.txt](ec2/user_data.txt). And also replace the `ami` attribute value with "ami-06b21ccaeff8cd686". Then run step 5 to create all the resources. Once you're done, come back here again.
+5. Replace the `user_data` attribute in [ec2/main.tf](ec2/main.tf)'s aws_instance resource with the content inside [ec2/user_data.txt](ec2/user_data.txt). And also replace the `ami` attribute value with "ami-06b21ccaeff8cd686". Then run step 6 to create all the resources. Once you're done, come back here again.
 
 When you come back:
+
     1. Create an image snapshot of the running instance via AWS console. (Actions > Image and templates > Create image).
+
     2. Record down the ami id, and replaced the `ami` attribute in [ec2/main.tf](ec2/main.tf).
+    
     3. Restore the content of `user_data` and `ami` attribute.
 
 Why are we doing this? Installing docker, git and tailscale every time we create an instance is slow. Snapshotting them and use the AMI to launch is faster.
 
-5. Run the following command in sequence,
+6. Run the following command in sequence,
 ```
 cd iam/
 terraform init
@@ -49,7 +52,7 @@ terraform plan
 terraform apply
 ```
 
-6. In local docker buildx, run the following command to create a remote builder and use it.
+7. In local docker buildx, run the following command to create a remote builder and use it.
 ```
 docker buildx create --name remote-builder --driver remote tcp://100.123.45.0:9999
 docker buildx use remote-builder
@@ -61,12 +64,12 @@ docker buildx build -t test \
 docker buildx rm remote-builder
 ```
 
-7. To destroy the instance after use, run the following command
+8. To destroy the instance after use, run the following command
 ```
 cd ec2/
 terraform destroy --target=aws_instance.buildkit
 ```
 
-8. This will leave the other resources except EC2 intact, saving time when building the instance next time.
+9. This will leave the other resources except EC2 intact, saving time when building the instance next time.
 
-9. To destroy everything, run `terraform destroy` inside the folder `ec2`, `s3`, `iam` in sequence.
+10. To destroy everything, run `terraform destroy` inside the folder `ec2`, `s3`, `iam` in sequence.
