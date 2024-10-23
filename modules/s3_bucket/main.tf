@@ -12,10 +12,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "delete_seven_days" {
   bucket = aws_s3_bucket.build_cache.id
 
   rule {
-    id = "delete-objects-after-seven-days"
+    id     = "housekeeping-rule"
     status = "Enabled"
     expiration {
-        days = 7
+      days = 7
+    }
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 1
     }
   }
 }
