@@ -1,5 +1,5 @@
 resource "aws_instance" "buildkit" {
-  ami           = "ami-077031ab126ca0f2c"
+  ami           = "ami-042b5d19ec787c797"
   instance_type = "c7i-flex.4xlarge" # 16 core, 32GB, 0.2432/hour spot
   # availability_zone = "us-east-1a"
   instance_market_options {
@@ -42,8 +42,4 @@ resource "aws_security_group" "buildkit" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-output "ec2_public_ip" {
-  value = aws_instance.buildkit.public_ip
 }
