@@ -1,2 +1,3 @@
-tailscale_auth_key = ""
+tailscale_auth_key_x86 = ""
+tailscale_auth_key_arm64 = ""
 iam_instance_profile = "BuildKitInstanceProfile"

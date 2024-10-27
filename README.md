@@ -12,14 +12,16 @@ Prerequisite:
 
 
 1. Create an AWS IAM user that has permissions to create resources.
-2. Modify Tailscale's ACL to create a tag. Assign owner and ip address pool for this tag.
+2. Modify Tailscale's ACL to create a tag for each architecture. Assign owner and ip address pool for the tags.
 ```json
 	"tagOwners": {
-		"tag:ec2machine": ["your-tailscale-login@gmail.com"],
+		"tag:ec2machine-x86": ["your-tailscale-login@gmail.com"],
+		"tag:ec2machine-arm64": ["your-tailscale-login@gmail.com"],
 	},
 
 	"nodeAttrs": [
-		{"target": ["tag:ec2machine"], "ipPool": ["100.123.45.0/32"]},
+		{"target": ["tag:ec2machine-x86"], "ipPool": ["100.123.45.0/32"]},
+		{"target": ["tag:ec2machine-arm64"], "ipPool": ["100.123.46.0/32"]},
 	],
 ```
 3. Create an auth key at Tailscale, check the "Ephemeral" flag and assign the tag.
@@ -52,6 +54,7 @@ terraform apply
 7. In local docker buildx, run the following command to create a remote builder and use it.
 ```
 docker buildx create --name remote-builder --driver remote tcp://100.123.45.0:9999
+docker buildx create --append --name remote-builder --driver remote tcp://100.123.46.0:9999
 docker buildx use remote-builder
 docker buildx build -t test \
   --cache-to type=s3,region=us-east-1,bucket=buildkit-cache-bucket,mode=max,name=test \
@@ -64,7 +67,10 @@ docker buildx rm remote-builder
 8. To destroy the instance after use, run the following command
 ```
 cd ec2/
-terraform destroy --target=aws_instance.buildkit
+terraform destroy \
+  --target=aws_instance.buildkit-x86 \
+  --target=aws_instance.buildkit-arm64
+
 ```
 
 9. This will leave the other resources except EC2 intact, saving time when building the instance next time.
