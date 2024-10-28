@@ -1,4 +1,4 @@
-# Runsonlocal
+# OnDemandBuildKit
 Create ephemeral remote Buildkit instance that can accelerate local builds and destroyed when done.
 
 Uses AWS infrastucture and takes advantage of its per-second billing.
