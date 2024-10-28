@@ -7,3 +7,8 @@ variable "ec2_instance_role" {
   description = "The IAM role attached to the EC2 instance"
   type        = string
 }
+
+variable "vpc_id" {
+  description = "ID of the VPC"
+  type        = string
+}
