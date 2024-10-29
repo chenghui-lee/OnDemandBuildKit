@@ -14,7 +14,7 @@ resource "aws_security_group" "buildkit" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["100.64.0.0/10"] # temporary allow SSH from anywhere, should be restricted
+    cidr_blocks = ["100.64.0.0/10"] # Tailscale VPN CIDR
   }
 
   egress {

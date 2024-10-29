@@ -49,7 +49,7 @@ resource "aws_instance" "buildkit-arm64" {
 
   root_block_device {
     volume_type = "gp3"
-    volume_size = 10 # change me
+    volume_size = 30
   }
 
   user_data = <<-EOF
